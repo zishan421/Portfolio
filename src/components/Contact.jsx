@@ -3,6 +3,7 @@ import { motion } from 'framer-motion'
 import { ArrowUpRight, Send, X } from 'lucide-react'
 import MagneticButton from './shared/MagneticButton'
 import ScrollReveal from './shared/ScrollReveal'
+import BorderGlow from './shared/BorderGlow'
 
 const wordVariants = {
   hidden: { y: '110%', opacity: 0 },
@@ -123,20 +124,22 @@ export default function Contact() {
 
           {/* Right: form */}
           <ScrollReveal direction="right" delay={0.4} className="contact-form-wrap">
-            <form action="https://formsubmit.co/zisanmahmud.rumc2001@gmail.com" method="POST" target="contact-submit-frame" onSubmit={submit} className="contact-form">
-                <input type="hidden" name="_subject" value="New portfolio contact message" />
-                <input type="hidden" name="_captcha" value="false" />
-                <input type="hidden" name="_template" value="table" />
-                <div className="form-row-2col">
-                  <FloatingInput label="Your name" name="name" required />
-                  <FloatingInput label="Email address" name="email" type="email" required />
-                </div>
-                <FloatingInput label="Tell me about your project" name="message" rows={4} required />
-                <MagneticButton type="submit" className="submit-btn">
-                  Send Message
-                  <Send size={15} />
-                </MagneticButton>
-            </form>
+            <BorderGlow className="contact-form-glow" glowColor="190 85 70" backgroundColor="#18181d" borderRadius={20} glowRadius={30} colors={['#a78bfa', '#22d3ee', '#f472b6']}>
+              <form action="https://formsubmit.co/zisanmahmud.rumc2001@gmail.com" method="POST" target="contact-submit-frame" onSubmit={submit} className="contact-form">
+                  <input type="hidden" name="_subject" value="New portfolio contact message" />
+                  <input type="hidden" name="_captcha" value="false" />
+                  <input type="hidden" name="_template" value="table" />
+                  <div className="form-row-2col">
+                    <FloatingInput label="Your name" name="name" required />
+                    <FloatingInput label="Email address" name="email" type="email" required />
+                  </div>
+                  <FloatingInput label="Tell me about your project" name="message" rows={4} required />
+                  <MagneticButton type="submit" className="submit-btn">
+                    Send Message
+                    <Send size={15} />
+                  </MagneticButton>
+              </form>
+            </BorderGlow>
             <iframe name="contact-submit-frame" title="Contact form submission" className="contact-submit-frame" />
           </ScrollReveal>
         </div>

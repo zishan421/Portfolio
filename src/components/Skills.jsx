@@ -3,9 +3,11 @@ import { motion } from 'framer-motion'
 import { ArrowUpRight } from 'lucide-react'
 import { skillCategories, marqueeSkills } from '../data/skills'
 import ScrollReveal from './shared/ScrollReveal'
+import { useTilt } from '../hooks/useTilt'
 
 function SkillCard({ skill, i }) {
   const [hovered, setHovered] = useState(false)
+  const { tiltStyle, tiltHandlers } = useTilt(8)
 
   return (
     <motion.div
@@ -16,6 +18,8 @@ function SkillCard({ skill, i }) {
       transition={{ delay: 0.05 * i, duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
+      {...tiltHandlers}
+      style={tiltStyle}
       whileHover={{ y: -4, scale: 1.03 }}
     >
       <motion.span

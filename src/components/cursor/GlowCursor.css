@@ -1,0 +1,40 @@
+.glow-cursor {
+  position: fixed;
+  inset: 0;
+  z-index: 9997;
+  display: block;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  user-select: none;
+}
+
+.glow-cursor-hotspot {
+  --cursor-x: -100px;
+  --cursor-y: -100px;
+  --cursor-opacity: 0;
+  position: fixed;
+  left: var(--cursor-x);
+  top: var(--cursor-y);
+  z-index: 9996;
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  pointer-events: none;
+  opacity: var(--cursor-opacity);
+  transform: translate(-50%, -50%);
+  background: radial-gradient(circle, rgba(103, 232, 249, 0.3) 0, rgba(167, 139, 250, 0.14) 24%, transparent 68%);
+  filter: blur(8px);
+  mix-blend-mode: screen;
+  transition: opacity 0.35s ease;
+}
+
+@media (hover: none), (prefers-reduced-motion: reduce) {
+  .glow-cursor {
+    display: none;
+  }
+
+  .glow-cursor-hotspot {
+    display: none;
+  }
+}

@@ -1,0 +1,78 @@
+.border-glow-card {
+  --edge-proximity: 0;
+  --cursor-angle: 45deg;
+  --edge-sensitivity: 30;
+  --border-radius: 20px;
+  --glow-padding: 34px;
+  --cone-spread: 25;
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: var(--border-radius);
+  background: var(--card-bg, #120f17);
+  transform: translate3d(0, 0, 0.01px);
+}
+
+.border-glow-card::before,
+.border-glow-card::after,
+.border-glow-card > .edge-light {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  z-index: -1;
+  opacity: 0;
+  transition: opacity 0.35s ease;
+}
+
+.border-glow-card:hover::before,
+.border-glow-card:hover::after,
+.border-glow-card:hover > .edge-light {
+  opacity: 1;
+}
+
+.border-glow-card::before {
+  border: 1px solid transparent;
+  background:
+    linear-gradient(var(--card-bg) 0 100%) padding-box,
+    conic-gradient(from var(--cursor-angle), var(--gradient-one), var(--gradient-two), var(--gradient-three), var(--gradient-one)) border-box;
+  mask: linear-gradient(#000 0 0) padding-box, linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  opacity: calc((var(--edge-proximity) - var(--edge-sensitivity)) / (100 - var(--edge-sensitivity)));
+}
+
+.border-glow-card::after {
+  background:
+    radial-gradient(at 80% 55%, var(--gradient-one), transparent 48%),
+    radial-gradient(at 15% 20%, var(--gradient-two), transparent 46%),
+    radial-gradient(at 60% 90%, var(--gradient-three), transparent 48%);
+  filter: blur(18px);
+  mix-blend-mode: screen;
+  opacity: calc(var(--fill-opacity) * var(--edge-proximity) / 100);
+}
+
+.border-glow-card > .edge-light {
+  inset: calc(var(--glow-padding) * -1);
+  border: 1px solid var(--glow-color-40);
+  filter: blur(10px);
+  mask: conic-gradient(from var(--cursor-angle), transparent 0 65%, #000 75%, transparent 87%);
+  opacity: calc((var(--edge-proximity) - var(--edge-sensitivity)) / (100 - var(--edge-sensitivity)));
+}
+
+.border-glow-inner {
+  position: relative;
+  z-index: 1;
+  min-width: 0;
+  border-radius: inherit;
+  overflow: hidden;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .border-glow-card::before,
+  .border-glow-card::after,
+  .border-glow-card > .edge-light {
+    transition: none;
+  }
+}

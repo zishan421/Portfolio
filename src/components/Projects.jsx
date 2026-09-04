@@ -3,6 +3,7 @@ import { motion, AnimatePresence, useMotionValue, useSpring } from 'framer-motio
 import { ArrowUpRight } from 'lucide-react'
 import { projects } from '../data/projects'
 import ScrollReveal from './shared/ScrollReveal'
+import { useTilt } from '../hooks/useTilt'
 
 const filters = ['All', 'Web', 'React', 'Graphics Design', 'Other']
 
@@ -13,6 +14,7 @@ function ProjectCard({ project, index, isFeatured }) {
   const cursorY = useMotionValue(0)
   const springX = useSpring(cursorX, { stiffness: 300, damping: 30 })
   const springY = useSpring(cursorY, { stiffness: 300, damping: 30 })
+  const { tiltStyle, tiltHandlers } = useTilt(isFeatured ? 4 : 6)
 
   const handleMouseMove = (e) => {
     if (!cardRef.current) return
@@ -33,7 +35,8 @@ function ProjectCard({ project, index, isFeatured }) {
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       onMouseMove={handleMouseMove}
-      style={{ '--project-accent': project.accent, '--project-bg': project.bg }}
+      {...tiltHandlers}
+      style={{ '--project-accent': project.accent, '--project-bg': project.bg, ...tiltStyle }}
     >
       {/* Image area */}
       <div className="project-image-area" style={{ background: project.bg }}>

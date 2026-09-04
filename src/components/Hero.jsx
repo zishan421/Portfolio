@@ -3,7 +3,8 @@ import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion'
 import { ArrowUpRight } from 'lucide-react'
 import MagneticButton from './shared/MagneticButton'
 import Aurora from './shared/Aurora'
-import heroImg from '../assets/self.png'
+import GhostFibers from './shared/GhostFibers'
+import heroImg from '../assets/self.webp'
 
 const headline = ['BUILDING', 'DIGITAL', 'EXPERIENCES', 'THAT MATTER.']
 
@@ -48,6 +49,10 @@ export default function Hero() {
   const mouseY = useMotionValue(0)
   const springX = useSpring(mouseX, { stiffness: 80, damping: 25 })
   const springY = useSpring(mouseY, { stiffness: 80, damping: 25 })
+  const tiltX = useMotionValue(0)
+  const tiltY = useMotionValue(0)
+  const springTiltX = useSpring(tiltX, { stiffness: 140, damping: 24 })
+  const springTiltY = useSpring(tiltY, { stiffness: 140, damping: 24 })
 
   const spotlightX = useTransform(springX, (value) => `${value}px`)
   const spotlightY = useTransform(springY, (value) => `${value}px`)
@@ -82,6 +87,14 @@ export default function Hero() {
 
   const scrollTo = (id) => document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
 
+  const handleVisualMove = (event) => {
+    const bounds = event.currentTarget.getBoundingClientRect()
+    const x = (event.clientX - bounds.left) / bounds.width - 0.5
+    const y = (event.clientY - bounds.top) / bounds.height - 0.5
+    tiltY.set(x * 10)
+    tiltX.set(y * -10)
+  }
+
   return (
     <section className="hero" id="hero" ref={heroRef}>
       {/* Cursor spotlight */}
@@ -89,6 +102,33 @@ export default function Hero() {
 
       {/* Animated background orbs */}
       <div className="hero-bg" aria-hidden="true">
+        <GhostFibers
+          lineColor="#140E35"
+          glowColor="#3437A0"
+          speed={0.2}
+          scale={2}
+          rotation={0}
+          rotationSpeed={0.25}
+          layers={4}
+          waveAmplitude={0.015}
+          waveFrequency={3}
+          waveSpeed={0.15}
+          layerSpeed={0.08}
+          twist={0.1}
+          twistFrequency={5}
+          twistSpeed={1.2}
+          lineFrequency={5}
+          lineSpacing={2}
+          lineSharpness={16}
+          glowFalloff={10}
+          glowIntensity={1.6}
+          brightness={2}
+          blueBoost={1.25}
+          vignette={0.8}
+          grain={0.05}
+          dpr={1}
+          fps={60}
+        />
         <Aurora />
         <div className="orb orb-1" />
         <div className="orb orb-2" />
@@ -181,12 +221,13 @@ export default function Hero() {
         </div>
 
         {/* Right: Profile Visual */}
-        <div className="hero-visual">
+        <div className="hero-visual" onPointerMove={handleVisualMove} onPointerLeave={() => { tiltX.set(0); tiltY.set(0) }}>
           <motion.div
             className="profile-composition"
             initial={{ opacity: 0, scale: 0.92 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: 0.6, duration: 1, ease: [0.16, 1, 0.3, 1] }}
+            style={{ rotateX: springTiltX, rotateY: springTiltY, transformStyle: 'preserve-3d' }}
           >
             {/* Animated glow ring */}
             <div className="profile-glow-ring" />
@@ -196,6 +237,9 @@ export default function Hero() {
             <div className="profile-orbit-label orbit-label-bottom">BASED IN<br />DHAKA, BD</div>
 
             <div className="profile-gradient-glow" aria-hidden="true" />
+            <div className="profile-depth-grid" aria-hidden="true" />
+            <div className="profile-orbit orbit-one" aria-hidden="true" />
+            <div className="profile-orbit orbit-two" aria-hidden="true" />
 
             {/* Profile image */}
             <div className="profile-frame">

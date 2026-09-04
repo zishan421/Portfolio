@@ -2,9 +2,11 @@ import { useRef } from 'react'
 import { motion, useScroll, useTransform } from 'framer-motion'
 import { experiences } from '../data/experience'
 import ScrollReveal from './shared/ScrollReveal'
+import { useTilt } from '../hooks/useTilt'
 
 function ExperienceCard({ exp, index }) {
   const isEven = index % 2 === 0
+  const { tiltStyle, tiltHandlers } = useTilt(5)
 
   return (
     <div className={`exp-item ${isEven ? 'exp-left' : 'exp-right'}`}>
@@ -26,6 +28,8 @@ function ExperienceCard({ exp, index }) {
         whileInView={{ opacity: 1, x: 0 }}
         viewport={{ once: true, amount: 0.3 }}
         transition={{ duration: 0.7, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
+        {...tiltHandlers}
+        style={tiltStyle}
       >
         <div className="exp-card-top">
           <span className="exp-period">{exp.period}</span>

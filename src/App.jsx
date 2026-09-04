@@ -8,14 +8,26 @@ import Experience from './components/Experience'
 import Services from './components/Services'
 import Contact from './components/Contact'
 import Footer from './components/Footer'
-import CustomCursor from './components/cursor/CustomCursor'
+import GlowCursor from './components/cursor/GlowCursor'
 
 function App() {
   useLenis()
 
   return (
     <>
-      <CustomCursor />
+      <GlowCursor
+        color="#67E8F9"
+        secondaryColor="#A78BFA"
+        trailLength={48}
+        trailWidth={11}
+        followSpeed={0.16}
+        glowIntensity={2.3}
+        opacity={1}
+        idleFade
+        idleTimeout={1600}
+        fadeDuration={1400}
+        blendMode="screen"
+      />
       <Navbar />
       <main>
         <Hero />

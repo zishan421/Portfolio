@@ -23,7 +23,7 @@ const services = [
     description:
       'Visual identities, logos, social media graphics, posters and creative designs built to communicate ideas with clarity and impact.',
     tags: ['Illustrator', 'Photoshop', 'Canva', 'Branding', 'Logo Design', 'Social Media'],
-    cta: 'VIEW GRAPHIC WORK',
+    cta: 'VIEW MY WORK',
     href: 'https://www.behance.net/zishanmahmud3',
     filter: 'Graphics Design',
     preview: 'graphic',
