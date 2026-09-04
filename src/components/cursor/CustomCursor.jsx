@@ -18,15 +18,29 @@ export default function CustomCursor() {
     // Only show on non-touch devices
     if (window.matchMedia('(hover: none)').matches) return
 
+    let frameId = 0
+    let latestX = -100
+    let latestY = -100
+
     const onMove = (e) => {
-      cursorX.set(e.clientX)
-      cursorY.set(e.clientY)
-      dotX.set(e.clientX)
-      dotY.set(e.clientY)
+      latestX = e.clientX
+      latestY = e.clientY
+      if (frameId) return
+
+      frameId = requestAnimationFrame(() => {
+        cursorX.set(latestX)
+        cursorY.set(latestY)
+        dotX.set(latestX)
+        dotY.set(latestY)
+        frameId = 0
+      })
     }
 
-    window.addEventListener('mousemove', onMove)
-    return () => window.removeEventListener('mousemove', onMove)
+    window.addEventListener('pointermove', onMove, { passive: true })
+    return () => {
+      window.removeEventListener('pointermove', onMove)
+      if (frameId) cancelAnimationFrame(frameId)
+    }
   }, [cursorX, cursorY, dotX, dotY])
 
   // Hide on touch

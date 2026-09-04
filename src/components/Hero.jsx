@@ -49,11 +49,8 @@ export default function Hero() {
   const springX = useSpring(mouseX, { stiffness: 80, damping: 25 })
   const springY = useSpring(mouseY, { stiffness: 80, damping: 25 })
 
-  const spotlightBg = useTransform(
-    [springX, springY],
-    ([x, y]) =>
-      `radial-gradient(600px circle at ${x}px ${y}px, rgba(124,58,237,0.12) 0%, transparent 65%)`
-  )
+  const spotlightX = useTransform(springX, (value) => `${value}px`)
+  const spotlightY = useTransform(springY, (value) => `${value}px`)
 
   useEffect(() => {
     const hero = heroRef.current
@@ -61,12 +58,26 @@ export default function Hero() {
     const isTouchDevice = window.matchMedia('(hover: none)').matches
     if (isTouchDevice) return
 
+    let frameId = 0
+    let latestX = 0
+    let latestY = 0
+
     const onMove = (e) => {
-      mouseX.set(e.clientX)
-      mouseY.set(e.clientY)
+      latestX = e.clientX
+      latestY = e.clientY
+      if (frameId) return
+
+      frameId = requestAnimationFrame(() => {
+        mouseX.set(latestX)
+        mouseY.set(latestY)
+        frameId = 0
+      })
     }
-    window.addEventListener('mousemove', onMove, { passive: true })
-    return () => window.removeEventListener('mousemove', onMove)
+    window.addEventListener('pointermove', onMove, { passive: true })
+    return () => {
+      window.removeEventListener('pointermove', onMove)
+      if (frameId) cancelAnimationFrame(frameId)
+    }
   }, [mouseX, mouseY])
 
   const scrollTo = (id) => document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
@@ -74,7 +85,7 @@ export default function Hero() {
   return (
     <section className="hero" id="hero" ref={heroRef}>
       {/* Cursor spotlight */}
-      <motion.div className="hero-spotlight" style={{ background: spotlightBg }} />
+      <motion.div className="hero-spotlight" style={{ '--spotlight-x': spotlightX, '--spotlight-y': spotlightY }} />
 
       {/* Animated background orbs */}
       <div className="hero-bg" aria-hidden="true">
