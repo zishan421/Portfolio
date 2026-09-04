@@ -1,10 +1,10 @@
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { motion, AnimatePresence, useMotionValue, useSpring } from 'framer-motion'
 import { ArrowUpRight } from 'lucide-react'
 import { projects } from '../data/projects'
 import ScrollReveal from './shared/ScrollReveal'
 
-const filters = ['All', 'Web', 'React', 'UI/UX', 'Other']
+const filters = ['All', 'Web', 'React', 'Graphics Design', 'Other']
 
 function ProjectCard({ project, index, isFeatured }) {
   const [hovered, setHovered] = useState(false)
@@ -99,12 +99,14 @@ function ProjectCard({ project, index, isFeatured }) {
           ))}
         </div>
         <div className="project-actions">
-          <a href={project.url} className="project-link" target="_blank" rel="noreferrer" aria-label={`View live ${project.title}`}>
-            Live <ArrowUpRight size={15} />
+          <a href={project.url} className="project-link" target="_blank" rel="noreferrer" aria-label={`View ${project.title}`}>
+            {project.category === 'Graphics Design' ? 'View Portfolio' : 'Live'} <ArrowUpRight size={15} />
           </a>
-          <a href={project.github} className="project-github-link" target="_blank" rel="noreferrer" aria-label={`View ${project.title} on GitHub`}>
-            GitHub <ArrowUpRight size={13} />
-          </a>
+          {project.github && (
+            <a href={project.github} className="project-github-link" target="_blank" rel="noreferrer" aria-label={`View ${project.title} on GitHub`}>
+              GitHub <ArrowUpRight size={13} />
+            </a>
+          )}
         </div>
       </div>
     </motion.article>
@@ -113,6 +115,16 @@ function ProjectCard({ project, index, isFeatured }) {
 
 export default function Projects() {
   const [activeFilter, setActiveFilter] = useState('All')
+
+  useEffect(() => {
+    const handleProjectFilter = (event) => {
+      setActiveFilter(event.detail)
+      document.getElementById('work')?.scrollIntoView({ behavior: 'smooth' })
+    }
+
+    window.addEventListener('portfolio-filter', handleProjectFilter)
+    return () => window.removeEventListener('portfolio-filter', handleProjectFilter)
+  }, [])
 
   const filtered = activeFilter === 'All'
     ? projects

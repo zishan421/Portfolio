@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
+import { ArrowUpRight } from 'lucide-react'
 import { skillCategories, marqueeSkills } from '../data/skills'
 import ScrollReveal from './shared/ScrollReveal'
 
@@ -92,6 +93,18 @@ export default function Skills() {
             </div>
           ))}
         </div>
+
+        <ScrollReveal delay={0.2}>
+          <a
+            className="behance-link"
+            href="https://www.behance.net/zishanmahmud3"
+            target="_blank"
+            rel="noreferrer"
+          >
+            Behance Portfolio
+            <ArrowUpRight size={16} />
+          </a>
+        </ScrollReveal>
       </div>
     </section>
   )

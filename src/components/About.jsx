@@ -4,9 +4,9 @@ import { ArrowUpRight } from 'lucide-react'
 import ScrollReveal from './shared/ScrollReveal'
 
 const stats = [
-  { value: '05+', label: 'Years of experience' },
+  { value: '01+', label: 'Year of experience' },
   { value: '15+', label: 'Projects shipped' },
-  { value: '12', label: 'Happy clients' },
+  { value: '4', label: 'Happy clients' },
   { value: '∞', label: 'Curiosity' },
 ]
 
@@ -75,7 +75,7 @@ export default function About() {
           <div className="about-copy-block">
             <ScrollReveal delay={0.3}>
               <p className="about-body">
-                I&apos;m Zyven, a multidisciplinary designer and front-end developer. I&apos;ve spent the last 5 years turning big ideas into digital things that are easy to love and even easier to use.
+                I&apos;m Zyven, a multidisciplinary designer and front-end developer. I&apos;ve spent the last 1 year turning big ideas into digital things that are easy to love and even easier to use.
               </p>
               <p className="about-body">
                 When I&apos;m away from the screen, you&apos;ll find me collecting old magazines, taking long walks, or trying to make the perfect cup of tea.

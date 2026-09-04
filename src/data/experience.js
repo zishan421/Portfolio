@@ -1,9 +1,9 @@
 export const experiences = [
   {
     id: 1,
-    role: 'Senior Creative Developer',
+    role: 'Front End And Back End Developer',
     company: 'Studio Blank',
-    period: '2023 — Present',
+    period: '2026 — Present',
     type: 'Full-time',
     description:
       'Led the front-end development of award-winning digital campaigns and brand platforms. Collaborated with designers and strategists to bring complex interactive experiences to life.',
@@ -11,7 +11,7 @@ export const experiences = [
   },
   {
     id: 2,
-    role: 'UI/UX Developer',
+    role: 'Professional Graphics Designer',
     company: 'Meridian Agency',
     period: '2021 — 2023',
     type: 'Full-time',

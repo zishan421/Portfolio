@@ -29,7 +29,7 @@ export const projects = [
   },
   {
     title: 'Chess Game',
-    category: 'React',
+    category: 'Other',
     type: 'Interactive game',
     description: 'A browser-based chess experience built for focused play and a smooth interactive flow.',
     tags: ['JavaScript', 'Game UI', 'Vercel'],
@@ -68,7 +68,7 @@ export const projects = [
   },
   {
     title: 'Todo App',
-    category: 'React',
+    category: 'Other',
     type: 'Productivity tool',
     description: 'A focused task management app designed to make everyday planning feel simple and satisfying.',
     tags: ['React', 'Productivity', 'Vercel'],
@@ -91,5 +91,18 @@ export const projects = [
     bg: '#07131A',
     url: 'https://toury-project.vercel.app/',
     github: githubProfile,
+  },
+  {
+    title: 'Graphic Design Portfolio',
+    category: 'Graphics Design',
+    type: 'Behance portfolio',
+    description: 'A curated collection of visual identities, layouts, and graphic design work.',
+    tags: ['Brand Identity', 'Visual Design', 'Behance'],
+    number: '08',
+    featured: false,
+    accent: '#F59E0B',
+    bg: '#1A1205',
+    url: 'https://www.behance.net/zishanmahmud3',
+    github: null,
   },
 ]

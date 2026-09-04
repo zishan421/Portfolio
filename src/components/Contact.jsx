@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
-import { ArrowUpRight, Send } from 'lucide-react'
+import { ArrowUpRight, Send, X } from 'lucide-react'
 import MagneticButton from './shared/MagneticButton'
 import ScrollReveal from './shared/ScrollReveal'
 
@@ -15,7 +15,7 @@ const wordVariants = {
 
 const lines = ["LET'S CREATE", 'SOMETHING', 'GREAT.']
 
-function FloatingInput({ label, type = 'text', placeholder, required, rows }) {
+function FloatingInput({ label, type = 'text', name, required, rows }) {
   const [focused, setFocused] = useState(false)
   const [value, setValue] = useState('')
 
@@ -25,6 +25,7 @@ function FloatingInput({ label, type = 'text', placeholder, required, rows }) {
     <div className={`float-field ${focused || value ? 'active' : ''}`}>
       <Tag
         type={type}
+        name={name}
         required={required}
         rows={rows}
         placeholder=""
@@ -55,9 +56,9 @@ function FloatingInput({ label, type = 'text', placeholder, required, rows }) {
 export default function Contact() {
   const [sent, setSent] = useState(false)
 
-  const submit = (e) => {
-    e.preventDefault()
+  const submit = (event) => {
     setSent(true)
+    event.currentTarget.reset()
   }
 
   return (
@@ -108,8 +109,8 @@ export default function Contact() {
             <p className="contact-tagline">
               Have a project in mind? Let&apos;s make something great together.
             </p>
-            <a href="mailto:hello@zyven.design" className="contact-email">
-              hello@zyven.design
+            <a href="mailto:zisanmahmud.rumc2001@gmail.com" className="contact-email">
+              Send an email
               <ArrowUpRight size={16} />
             </a>
             <div className="contact-socials">
@@ -122,32 +123,44 @@ export default function Contact() {
 
           {/* Right: form */}
           <ScrollReveal direction="right" delay={0.4} className="contact-form-wrap">
-            {sent ? (
-              <motion.div
-                className="success-state"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-              >
-                <div className="success-icon">✳</div>
-                <h3>Message received.</h3>
-                <p>Thanks for reaching out. I&apos;ll be in touch very soon.</p>
-              </motion.div>
-            ) : (
-              <form onSubmit={submit} className="contact-form">
+            <form action="https://formsubmit.co/zisanmahmud.rumc2001@gmail.com" method="POST" target="contact-submit-frame" onSubmit={submit} className="contact-form">
+                <input type="hidden" name="_subject" value="New portfolio contact message" />
+                <input type="hidden" name="_captcha" value="false" />
+                <input type="hidden" name="_template" value="table" />
                 <div className="form-row-2col">
-                  <FloatingInput label="Your name" required />
-                  <FloatingInput label="Email address" type="email" required />
+                  <FloatingInput label="Your name" name="name" required />
+                  <FloatingInput label="Email address" name="email" type="email" required />
                 </div>
-                <FloatingInput label="Tell me about your project" rows={4} required />
+                <FloatingInput label="Tell me about your project" name="message" rows={4} required />
                 <MagneticButton type="submit" className="submit-btn">
                   Send Message
                   <Send size={15} />
                 </MagneticButton>
-              </form>
-            )}
+            </form>
+            <iframe name="contact-submit-frame" title="Contact form submission" className="contact-submit-frame" />
           </ScrollReveal>
         </div>
       </div>
+
+      {sent && (
+        <div className="success-modal-backdrop" role="presentation">
+          <motion.div
+            className="success-state success-modal"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="success-title"
+            initial={{ opacity: 0, y: 18, scale: 0.96 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+          >
+            <button className="success-close" onClick={() => setSent(false)} aria-label="Close confirmation">
+              <X size={18} />
+            </button>
+            <div className="success-icon">✳</div>
+            <h3 id="success-title">Request submitted</h3>
+            <p>Thanks for reaching out. I&apos;ll be in touch very soon.</p>
+          </motion.div>
+        </div>
+      )}
     </section>
   )
 }

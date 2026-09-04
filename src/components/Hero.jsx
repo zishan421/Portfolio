@@ -153,7 +153,7 @@ export default function Hero() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 1.1, duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
           >
-            <MagneticButton className="btn-primary" onClick={() => scrollTo('work')}>
+            <MagneticButton className="btn-primary" onClick={() => window.open('https://ecommerce-t-9q71.vercel.app/', '_blank', 'noopener,noreferrer')}>
               View My Work
               <ArrowUpRight size={16} />
             </MagneticButton>
@@ -200,7 +200,7 @@ export default function Hero() {
             {/* Profile image */}
             <div className="profile-frame">
               <div className="profile-img-wrap">
-                <img src={heroImg} alt="Zyven — Creative Developer" className="profile-img" />
+                <img src={heroImg} alt="Zyven — Front End and Back End Developer" className="profile-img" />
                 <div className="profile-overlay" />
                 <div className="profile-scanline" aria-hidden="true" />
               </div>
@@ -214,7 +214,10 @@ export default function Hero() {
               transition={{ delay: 1.0, duration: 0.7 }}
             >
               <p className="panel-name">Zyven</p>
-              <p className="panel-role">Creative Developer</p>
+              <p className="panel-role">
+                Front End And Back End Developer<br />
+                Professional Graphics Design
+              </p>
               <div className="panel-dot-row">
                 <span className="panel-dot active" />
                 <span className="panel-dot" />

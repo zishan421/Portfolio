@@ -1,37 +1,65 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { ArrowUpRight, Globe, Layers, Cpu } from 'lucide-react'
+import { ArrowUpRight, Brush, Code2 } from 'lucide-react'
 import ScrollReveal from './shared/ScrollReveal'
 
 const services = [
   {
     num: '01',
-    title: 'Web Design & Build',
-    icon: Globe,
+    title: 'Web Design & Development',
+    icon: Code2,
     description:
-      'Flexible, fast websites and web apps built from scratch — from first wireframe to final deploy. I care as much about the code quality as the visual output.',
-    tags: ['React', 'Next.js', 'Tailwind CSS', 'Animation'],
+      'Modern, responsive websites and web applications built with clean code, thoughtful interactions and a strong focus on performance.',
+    tags: ['React', 'JavaScript', 'Tailwind CSS', 'Vite', 'HTML', 'CSS'],
+    cta: 'VIEW WEB PROJECTS',
+    href: 'https://ecommerce-t-9q71.vercel.app/',
+    filter: 'Web',
+    preview: 'web',
   },
   {
     num: '02',
-    title: 'Product Experience',
-    icon: Layers,
+    title: 'Graphic Design & Branding',
+    icon: Brush,
     description:
-      'Digital products designed around real people. I bridge design and engineering to ship interfaces that are intuitive, accessible, and beautifully considered.',
-    tags: ['UX Strategy', 'Design Systems', 'Prototyping', 'Research'],
-  },
-  {
-    num: '03',
-    title: 'Creative Direction',
-    icon: Cpu,
-    description:
-      'Finding the voice, look, and feeling that makes a brand unmistakably itself. From visual identity through interactive motion, across every touchpoint.',
-    tags: ['Identity', 'Motion', 'Art Direction', 'Brand'],
+      'Visual identities, logos, social media graphics, posters and creative designs built to communicate ideas with clarity and impact.',
+    tags: ['Illustrator', 'Photoshop', 'Canva', 'Branding', 'Logo Design', 'Social Media'],
+    cta: 'VIEW GRAPHIC WORK',
+    href: 'https://www.behance.net/zishanmahmud3',
+    filter: 'Graphics Design',
+    preview: 'graphic',
   },
 ]
 
+function ServicePreview({ type }) {
+  if (type === 'web') {
+    return (
+      <div className="service-preview web-preview" aria-label="Selected web project preview">
+        <div className="browser-bar"><span /><span /><span /><small>ecommerce-project / live</small></div>
+        <div className="browser-content">
+          <div className="browser-nav"><b>SHOP / 24</b><i /><i /><i /></div>
+          <div className="browser-hero"><div><span>SELECTED PROJECT</span><strong>Ecommerce<br /><em>Website.</em></strong><small>React / Vite / 2025</small></div><div className="browser-product" /></div>
+        </div>
+      </div>
+    )
+  }
+
+  return (
+    <div className="service-preview graphic-preview" aria-label="Graphic design portfolio preview">
+      <div className="design-sheet design-sheet-back"><span>FORM<br />FOLLOWS<br />FEELING</span></div>
+      <div className="design-sheet design-sheet-main"><small>ZYVEN / BRAND STUDY</small><strong>MAKE<br /><em>VISIBLE.</em></strong><i /></div>
+      <div className="design-sheet design-sheet-front"><span>03</span><b>CREATE<br />WITH<br />PURPOSE</b></div>
+    </div>
+  )
+}
+
 export default function Services() {
   const [activeIndex, setActiveIndex] = useState(null)
+
+  const openPortfolio = (event, service) => {
+    event.preventDefault()
+    event.stopPropagation()
+    window.location.href = service.href
+  }
 
   return (
     <section className="services-section" id="services">
@@ -60,63 +88,59 @@ export default function Services() {
             const isDimmed = activeIndex !== null && !isActive
 
             return (
-              <ScrollReveal key={service.num} delay={0.1 * i}>
+              <ScrollReveal key={service.num} delay={0.12 * i} className="service-reveal">
                 <motion.div
                   className={`service-row ${isActive ? 'active' : ''} ${isDimmed ? 'dimmed' : ''}`}
                   onMouseEnter={() => setActiveIndex(i)}
-                  onMouseLeave={() => setActiveIndex(null)}
+                  onMouseMove={(event) => {
+                    const bounds = event.currentTarget.getBoundingClientRect()
+                    event.currentTarget.style.setProperty('--service-x', `${event.clientX - bounds.left}px`)
+                  }}
+                  onClick={() => setActiveIndex(isActive ? null : i)}
                   animate={{ opacity: isDimmed ? 0.35 : 1 }}
-                  transition={{ duration: 0.25 }}
+                  transition={{ duration: 0.3 }}
                 >
-                  {/* Number + icon row */}
-                  <div className="service-meta">
-                    <span className="service-num">{service.num}</span>
-                    <motion.div
-                      className="service-icon-wrap"
-                      animate={isActive ? { rotate: 0, scale: 1.15 } : { rotate: 0, scale: 1 }}
-                      transition={{ duration: 0.3 }}
-                    >
-                      <Icon size={20} />
+                  <div className="service-row-head">
+                    <div className="service-meta">
+                      <span className="service-num">{service.num}</span>
+                      <motion.div className="service-icon-wrap" animate={isActive ? { rotate: -8, scale: 1.16 } : { rotate: 0, scale: 1 }} transition={{ type: 'spring', stiffness: 300, damping: 18 }}>
+                        <Icon size={21} strokeWidth={1.5} />
+                      </motion.div>
+                    </div>
+                    <motion.h3 className="service-title" animate={isActive ? { x: 8 } : { x: 0 }} transition={{ type: 'spring', stiffness: 280, damping: 24 }}>
+                      {service.title}
+                    </motion.h3>
+                    <motion.div className="service-arrow" animate={isActive ? { x: 5, y: -5, rotate: 45 } : { x: 0, y: 0, rotate: 0 }} transition={{ type: 'spring', stiffness: 260, damping: 20 }}>
+                      <ArrowUpRight size={24} />
                     </motion.div>
                   </div>
 
-                  {/* Title */}
-                  <h3 className="service-title">{service.title}</h3>
-
-                  {/* Expandable description */}
-                  <div className="service-expand-wrap">
-                    <AnimatePresence>
+                  <AnimatePresence initial={false}>
                       {isActive && (
                         <motion.div
-                          className="service-expand"
-                          initial={{ height: 0, opacity: 0 }}
-                          animate={{ height: 'auto', opacity: 1 }}
-                          exit={{ height: 0, opacity: 0 }}
-                          transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+                          className="service-expand service-expand-new"
+                          initial={{ height: 0, opacity: 0, y: 18 }}
+                          animate={{ height: 'auto', opacity: 1, y: 0 }}
+                          exit={{ height: 0, opacity: 0, y: 12 }}
+                          transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
                         >
-                          <p className="service-desc">{service.description}</p>
-                          <div className="service-tags">
-                            {service.tags.map((tag) => (
-                              <span key={tag} className="service-tag">{tag}</span>
-                            ))}
+                          <div className="service-expand-copy">
+                            <p className="service-desc">{service.description}</p>
+                            <div className="service-tags">
+                              {service.tags.map((tag, tagIndex) => (
+                                <motion.span key={tag} className="service-tag" initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.08 + tagIndex * 0.035, duration: 0.3 }}>{tag}</motion.span>
+                              ))}
+                            </div>
+                            <button type="button" className="service-cta" onClick={(event) => openPortfolio(event, service)}>
+                              {service.cta} <ArrowUpRight size={15} />
+                            </button>
                           </div>
+                            <motion.div className="service-preview-wrap" initial={{ clipPath: 'inset(0% 0% 100% 0%)', scale: 1.04, opacity: 0 }} animate={{ clipPath: 'inset(0% 0% 0% 0%)', scale: 1, opacity: 1 }} exit={{ clipPath: 'inset(100% 0% 0% 0%)', opacity: 0 }} transition={{ duration: 0.7, delay: 0.08, ease: [0.76, 0, 0.24, 1] }}>
+                            <ServicePreview type={service.preview} />
+                          </motion.div>
                         </motion.div>
                       )}
-                    </AnimatePresence>
-                  </div>
-
-                  {/* Arrow */}
-                  <motion.div
-                    className="service-arrow"
-                    animate={isActive ? { rotate: 0 } : { rotate: 0 }}
-                  >
-                    <motion.div
-                      animate={isActive ? { rotate: 45, color: 'var(--accent)' } : { rotate: 0 }}
-                      transition={{ duration: 0.25 }}
-                    >
-                      <ArrowUpRight size={22} />
-                    </motion.div>
-                  </motion.div>
+                  </AnimatePresence>
                 </motion.div>
               </ScrollReveal>
             )

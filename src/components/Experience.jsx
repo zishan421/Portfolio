@@ -31,7 +31,14 @@ function ExperienceCard({ exp, index }) {
           <span className="exp-period">{exp.period}</span>
           <span className="exp-type-badge">{exp.type}</span>
         </div>
-        <h3 className="exp-role">{exp.role}</h3>
+        <h3 className="exp-role">
+          {exp.role.split('\n').map((roleLine, lineIndex) => (
+            <span key={roleLine}>
+              {lineIndex > 0 && <br />}
+              {roleLine}
+            </span>
+          ))}
+        </h3>
         <p className="exp-company">{exp.company}</p>
         <p className="exp-desc">{exp.description}</p>
         <div className="exp-tags">
