@@ -7,13 +7,13 @@ export function useLenis() {
     if (prefersReduced) return
 
     const lenis = new Lenis({
-      duration: 1.05,
+      duration: 0.75,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       orientation: 'vertical',
       gestureOrientation: 'vertical',
       smoothWheel: true,
       syncTouch: false,
-      wheelMultiplier: 0.9,
+      wheelMultiplier: 1,
     })
 
     let rafId

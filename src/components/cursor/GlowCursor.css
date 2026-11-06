@@ -2,39 +2,57 @@
   position: fixed;
   inset: 0;
   z-index: 9997;
-  display: block;
-  width: 100vw;
-  height: 100vh;
   pointer-events: none;
   user-select: none;
 }
 
-.glow-cursor-hotspot {
-  --cursor-x: -100px;
-  --cursor-y: -100px;
-  --cursor-opacity: 0;
-  position: fixed;
-  left: var(--cursor-x);
-  top: var(--cursor-y);
-  z-index: 9996;
-  width: 150px;
-  height: 150px;
+.glow-cursor-glow,
+.glow-cursor-ring,
+.glow-cursor-dot {
+  position: absolute;
+  top: 0;
+  left: 0;
   border-radius: 50%;
-  pointer-events: none;
-  opacity: var(--cursor-opacity);
-  transform: translate(-50%, -50%);
-  background: radial-gradient(circle, rgba(103, 232, 249, 0.3) 0, rgba(167, 139, 250, 0.14) 24%, transparent 68%);
-  filter: blur(8px);
-  mix-blend-mode: screen;
-  transition: opacity 0.35s ease;
+  opacity: 0;
+  transition: opacity 180ms ease;
+  will-change: transform;
+}
+
+.glow-cursor-glow {
+  width: 84px;
+  height: 84px;
+  background: radial-gradient(
+    circle,
+    color-mix(in srgb, var(--cursor-color) 25%, transparent),
+    color-mix(in srgb, var(--cursor-secondary-color) 15%, transparent) 38%,
+    transparent 72%
+  );
+  transition: opacity 180ms ease, transform 180ms ease-out;
+}
+
+.glow-cursor-ring {
+  width: 28px;
+  height: 28px;
+  border: 1px solid color-mix(in srgb, var(--cursor-secondary-color) 75%, transparent);
+  transition: opacity 180ms ease, transform 100ms ease-out;
+}
+
+.glow-cursor-dot {
+  width: 5px;
+  height: 5px;
+  background: var(--cursor-color);
+  box-shadow: 0 0 10px color-mix(in srgb, var(--cursor-color) 70%, transparent);
+  transition: opacity 100ms ease;
+}
+
+.glow-cursor[data-visible='true'] .glow-cursor-glow,
+.glow-cursor[data-visible='true'] .glow-cursor-ring,
+.glow-cursor[data-visible='true'] .glow-cursor-dot {
+  opacity: 1;
 }
 
 @media (hover: none), (prefers-reduced-motion: reduce) {
   .glow-cursor {
-    display: none;
-  }
-
-  .glow-cursor-hotspot {
     display: none;
   }
 }

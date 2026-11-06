@@ -1,4 +1,3 @@
-import { useLenis } from './hooks/useLenis'
 import Navbar from './components/Navbar'
 import Hero from './components/Hero'
 import About from './components/About'
@@ -11,23 +10,9 @@ import Footer from './components/Footer'
 import GlowCursor from './components/cursor/GlowCursor'
 
 function App() {
-  useLenis()
-
   return (
     <>
-      <GlowCursor
-        color="#67E8F9"
-        secondaryColor="#A78BFA"
-        trailLength={48}
-        trailWidth={11}
-        followSpeed={0.16}
-        glowIntensity={2.3}
-        opacity={1}
-        idleFade
-        idleTimeout={1600}
-        fadeDuration={1400}
-        blendMode="screen"
-      />
+      <GlowCursor color="#67E8F9" secondaryColor="#A78BFA" />
       <Navbar />
       <main>
         <Hero />

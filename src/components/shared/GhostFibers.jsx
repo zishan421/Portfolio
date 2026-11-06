@@ -50,7 +50,10 @@ export default function GhostFibers({
     let width = 0
     let height = 0
     let time = 0
-    const frameInterval = 1000 / Math.min(fps, 45)
+    const isMobile = window.matchMedia('(max-width: 768px)').matches
+    const frameInterval = 1000 / Math.min(fps, isMobile ? 24 : 40)
+    let isVisible = false
+    let isPageVisible = !document.hidden
 
     const resize = () => {
       const bounds = canvas.getBoundingClientRect()
@@ -63,9 +66,10 @@ export default function GhostFibers({
     }
 
     const draw = (now) => {
-      if (paused) return
-      frameId = requestAnimationFrame(draw)
-      if (now - lastFrame < frameInterval) return
+      frameId = 0
+      if (paused || !isVisible || !isPageVisible) return
+      if (!reducedMotion) frameId = requestAnimationFrame(draw)
+      if (!reducedMotion && now - lastFrame < frameInterval) return
       lastFrame = now
       time = reducedMotion ? 0 : now * 0.001
       context.clearRect(0, 0, width, height)
@@ -121,15 +125,43 @@ export default function GhostFibers({
       context.fillRect(0, 0, width, height)
     }
 
-    const observer = new ResizeObserver(resize)
-    observer.observe(canvas)
+    const scheduleDraw = () => {
+      if (!paused && isVisible && isPageVisible && !frameId) {
+        frameId = requestAnimationFrame(draw)
+      }
+    }
+    const intersectionObserver = new IntersectionObserver(([entry]) => {
+      isVisible = entry.isIntersecting
+      if (!isVisible) {
+        cancelAnimationFrame(frameId)
+        frameId = 0
+      } else {
+        scheduleDraw()
+      }
+    })
+    const resizeObserver = new ResizeObserver(() => {
+      resize()
+      if (reducedMotion) scheduleDraw()
+    })
+    const handleVisibilityChange = () => {
+      isPageVisible = !document.hidden
+      if (!isPageVisible) {
+        cancelAnimationFrame(frameId)
+        frameId = 0
+      } else {
+        scheduleDraw()
+      }
+    }
+    resizeObserver.observe(canvas)
+    intersectionObserver.observe(canvas)
+    document.addEventListener('visibilitychange', handleVisibilityChange)
     resize()
-    if (!reducedMotion) frameId = requestAnimationFrame(draw)
-    else draw(0)
 
     return () => {
       cancelAnimationFrame(frameId)
-      observer.disconnect()
+      resizeObserver.disconnect()
+      intersectionObserver.disconnect()
+      document.removeEventListener('visibilitychange', handleVisibilityChange)
     }
   }, [brightness, blueBoost, dpr, fps, glowColor, glowFalloff, glowIntensity, grain, layers, layerSpeed, lineColor, lineFrequency, lineSharpness, lineSpacing, lightMode, paused, rotation, rotationSpeed, scale, speed, twist, twistFrequency, twistSpeed, vignette, waveAmplitude, waveFrequency, waveSpeed])
 

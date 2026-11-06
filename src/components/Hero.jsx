@@ -1,5 +1,4 @@
-import { useEffect, useRef } from 'react'
-import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion'
+import { motion, useMotionValue, useSpring } from 'framer-motion'
 import { ArrowUpRight } from 'lucide-react'
 import MagneticButton from './shared/MagneticButton'
 import Aurora from './shared/Aurora'
@@ -44,46 +43,10 @@ function FloatingBadge({ label, delay, dx, dy }) {
 }
 
 export default function Hero() {
-  const heroRef = useRef(null)
-  const mouseX = useMotionValue(0)
-  const mouseY = useMotionValue(0)
-  const springX = useSpring(mouseX, { stiffness: 80, damping: 25 })
-  const springY = useSpring(mouseY, { stiffness: 80, damping: 25 })
   const tiltX = useMotionValue(0)
   const tiltY = useMotionValue(0)
   const springTiltX = useSpring(tiltX, { stiffness: 140, damping: 24 })
   const springTiltY = useSpring(tiltY, { stiffness: 140, damping: 24 })
-
-  const spotlightX = useTransform(springX, (value) => `${value}px`)
-  const spotlightY = useTransform(springY, (value) => `${value}px`)
-
-  useEffect(() => {
-    const hero = heroRef.current
-    if (!hero) return
-    const isTouchDevice = window.matchMedia('(hover: none)').matches
-    if (isTouchDevice) return
-
-    let frameId = 0
-    let latestX = 0
-    let latestY = 0
-
-    const onMove = (e) => {
-      latestX = e.clientX
-      latestY = e.clientY
-      if (frameId) return
-
-      frameId = requestAnimationFrame(() => {
-        mouseX.set(latestX)
-        mouseY.set(latestY)
-        frameId = 0
-      })
-    }
-    window.addEventListener('pointermove', onMove, { passive: true })
-    return () => {
-      window.removeEventListener('pointermove', onMove)
-      if (frameId) cancelAnimationFrame(frameId)
-    }
-  }, [mouseX, mouseY])
 
   const scrollTo = (id) => document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
 
@@ -96,20 +59,14 @@ export default function Hero() {
   }
 
   return (
-    <section className="hero" id="hero" ref={heroRef}>
-      {/* Cursor spotlight */}
-      <motion.div className="hero-spotlight" style={{ '--spotlight-x': spotlightX, '--spotlight-y': spotlightY }} />
-
-      {/* Animated background orbs */}
+    <section className="hero" id="hero">
       <div className="hero-bg" aria-hidden="true">
         <GhostFibers
           lineColor="#140E35"
           glowColor="#3437A0"
           speed={0.2}
           scale={2}
-          rotation={0}
-          rotationSpeed={0.25}
-          layers={4}
+          layers={2}
           waveAmplitude={0.015}
           waveFrequency={3}
           waveSpeed={0.15}
@@ -118,16 +75,14 @@ export default function Hero() {
           twistFrequency={5}
           twistSpeed={1.2}
           lineFrequency={5}
-          lineSpacing={2}
-          lineSharpness={16}
-          glowFalloff={10}
+          lineSpacing={3}
+          lineSharpness={22}
           glowIntensity={1.6}
           brightness={2}
-          blueBoost={1.25}
           vignette={0.8}
           grain={0.05}
           dpr={1}
-          fps={60}
+          fps={24}
         />
         <Aurora />
         <div className="orb orb-1" />
